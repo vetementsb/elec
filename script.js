@@ -85,14 +85,15 @@ const status = document.getElementById('formStatus');
 form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // собираем данные вручную
     const name = form.querySelector('[name="name"]').value;
     const phone = form.querySelector('[name="phone"]').value;
     const details = form.querySelector('[name="details"]').value;
 
+    // СНАЧАЛА формируем сообщение
     document.getElementById('fullMessage').value =
         `Имя: ${name}\nТелефон: ${phone}\nДетали: ${details}`;
 
+    // ПОТОМ создаём FormData
     const data = new FormData(form);
 
     try {
