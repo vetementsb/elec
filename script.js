@@ -78,7 +78,6 @@ document.getElementById('scrollToFormBtn')?.addEventListener('click', () => scro
 document.getElementById('scrollToServicesBtn')?.addEventListener('click', () => scrollToSection('services-section'));
 
 // Обработка формы
-<script>
 const form = document.getElementById('callbackForm');
 const status = document.getElementById('formStatus');
 
@@ -115,4 +114,4 @@ form.addEventListener('submit', async function(e) {
         status.innerHTML = "Ошибка соединения.";
     }
 });
-</script>
+
