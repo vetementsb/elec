@@ -78,16 +78,40 @@ document.getElementById('scrollToFormBtn')?.addEventListener('click', () => scro
 document.getElementById('scrollToServicesBtn')?.addEventListener('click', () => scrollToSection('services-section'));
 
 // Обработка формы
+<script>
 const form = document.getElementById('callbackForm');
-if(form) {
-    form.addEventListener('submit', (e) => {
-        const name = form.querySelector('input[name="name"]')?.value.trim();
-        const phone = form.querySelector('input[name="phone"]')?.value.trim();
-        if(!name || !phone) {
-            alert('Заполните имя и телефон');
-            return;
+const status = document.getElementById('formStatus');
+
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // собираем данные вручную
+    const name = form.querySelector('[name="name"]').value;
+    const phone = form.querySelector('[name="phone"]').value;
+    const details = form.querySelector('[name="details"]').value;
+
+    document.getElementById('fullMessage').value =
+        `Имя: ${name}\nТелефон: ${phone}\nДетали: ${details}`;
+
+    const data = new FormData(form);
+
+    try {
+        const response = await fetch("https://formspree.io/f/xxxxx", {
+            method: "POST",
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            status.innerHTML = "Спасибо! Заявка отправлена.";
+            form.reset();
+        } else {
+            status.innerHTML = "Ошибка отправки.";
         }
-        alert(`Спасибо, ${name}! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.`);
-        form.reset();
-    });
-}
+    } catch (error) {
+        status.innerHTML = "Ошибка соединения.";
+    }
+});
+</script>
