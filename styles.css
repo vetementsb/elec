@@ -509,6 +509,10 @@ section {
     border: 1px solid #e8a87c;
 }
 
+textarea[name="details"] {
+    resize: vertical;
+}
+
 .modal-content img {
     max-width: 100%;
     max-height: 80vh;
