@@ -78,40 +78,47 @@ document.getElementById('scrollToFormBtn')?.addEventListener('click', () => scro
 document.getElementById('scrollToServicesBtn')?.addEventListener('click', () => scrollToSection('services-section'));
 
 // Обработка формы
-const form = document.getElementById('callbackForm');
-const status = document.getElementById('formStatus');
+document.addEventListener("DOMContentLoaded", function () {
 
-form.addEventListener('submit', async function(e) {
-    e.preventDefault();
+    const form = document.getElementById('callbackForm');
+    const status = document.getElementById('formStatus');
 
-    const name = form.querySelector('[name="name"]').value;
-    const phone = form.querySelector('[name="phone"]').value;
-    const details = form.querySelector('[name="details"]').value;
+    if (!form) return; // защита
 
-    // СНАЧАЛА формируем сообщение
-    document.getElementById('fullMessage').value =
-        `Имя: ${name}\nТелефон: ${phone}\nДетали: ${details}`;
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-    // ПОТОМ создаём FormData
-    const data = new FormData(form);
+        const name = form.querySelector('[name="name"]')?.value || '';
+        const phone = form.querySelector('[name="phone"]')?.value || '';
+        const details = form.querySelector('[name="details"]')?.value || '';
 
-    try {
-        const response = await fetch("https://formspree.io/f/xxxxx", {
-            method: "POST",
-            body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            status.innerHTML = "Спасибо! Заявка отправлена.";
-            form.reset();
-        } else {
-            status.innerHTML = "Ошибка отправки.";
+        const fullMessage = document.getElementById('fullMessage');
+        if (fullMessage) {
+            fullMessage.value =
+                `Имя: ${name}\nТелефон: ${phone}\nДетали: ${details}`;
         }
-    } catch (error) {
-        status.innerHTML = "Ошибка соединения.";
-    }
-});
 
+        const data = new FormData(form);
+
+        try {
+            const response = await fetch("https://formspree.io/f/xkoenpla", {
+                method: "POST",
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                if (status) status.innerHTML = "✅ Спасибо! Заявка отправлена.";
+                form.reset();
+            } else {
+                if (status) status.innerHTML = "❌ Ошибка отправки.";
+            }
+        } catch (error) {
+            if (status) status.innerHTML = "⚠️ Ошибка соединения.";
+        }
+
+    });
+
+});
